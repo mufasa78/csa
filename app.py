@@ -13,7 +13,7 @@ import time
 
 # Set page configuration
 st.set_page_config(
-    page_title="中文情感识别系统",
+    page_title="中文/英文情感识别系统 | Chinese/English Sentiment Analysis",
     page_icon="😊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -80,7 +80,8 @@ def load_models():
 
 def login_user():
     """Handle user login"""
-    st.title("中文情感识别与隐私保护系统")
+    st.title("中文/英文情感识别与隐私保护系统")
+    st.subheader("Chinese/English Sentiment Analysis & Privacy Protection")
     
     with st.form("login_form"):
         username = st.text_input("用户名")
@@ -118,20 +119,21 @@ def display_sidebar():
 
 def sentiment_analysis_page():
     """Display sentiment analysis page"""
-    st.title("中文文本情感分析")
+    st.title("中文/英文文本情感分析")
+    st.subheader("Chinese/English Text Sentiment Analysis")
     
     # Model selection
     model_type = st.selectbox(
-        "选择模型",
+        "选择模型 (Select Model)",
         ["CNN", "LSTM"],
         index=0 if st.session_state['selected_model'] == 'CNN' else 1
     )
     st.session_state['selected_model'] = model_type
     
     # Text input
-    text_input = st.text_area("请输入中文文本进行情感分析", height=150)
+    text_input = st.text_area("请输入中文或英文文本进行情感分析 (Enter Chinese or English text for sentiment analysis)", height=150)
     
-    if st.button("分析情感"):
+    if st.button("分析情感 (Analyze Sentiment)"):
         if text_input:
             with st.spinner("正在分析..."):
                 # Preprocess text
@@ -163,15 +165,19 @@ def sentiment_analysis_page():
                 # Display result
                 st.success(f"情感分析完成!")
                 
+                # Add English sentiment labels
+                english_sentiment_labels = ['Negative', 'Neutral', 'Positive']
+                english_sentiment = english_sentiment_labels[sentiment_idx]
+                
                 col1, col2 = st.columns(2)
                 with col1:
-                    st.subheader("分析结果")
-                    st.write(f"**情感倾向:** {sentiment}")
-                    st.write(f"**置信度:** {confidence:.2f}")
-                    st.write(f"**分析模型:** {model_type}")
+                    st.subheader("分析结果 (Analysis Results)")
+                    st.write(f"**情感倾向 (Sentiment):** {sentiment} / {english_sentiment}")
+                    st.write(f"**置信度 (Confidence):** {confidence:.2f}")
+                    st.write(f"**分析模型 (Model):** {model_type}")
                 
                 with col2:
-                    st.subheader("置信度分布")
+                    st.subheader("置信度分布 (Confidence Distribution)")
                     plot_confidence(prediction[0], sentiment_labels)
         else:
             st.warning("请输入文本再进行分析")

@@ -4,33 +4,56 @@ import jieba
 
 class SimpleSentimentModel:
     """
-    A simple rule-based model for Chinese sentiment analysis.
+    A simple rule-based model for Chinese and English sentiment analysis.
     This is used as a fallback when deep learning models are unavailable.
     """
     def __init__(self, model_type="CNN"):
         self.model_type = model_type
         
-        # Simple Chinese sentiment dictionaries
-        self.positive_words = [
+        # Chinese sentiment dictionaries
+        self.positive_words_zh = [
             "好", "优秀", "棒", "强", "喜欢", "满意", "赞", "精彩", "优质", "出色", 
             "完美", "卓越", "良好", "愉快", "幸福", "高兴", "快乐", "感谢", "支持", "推荐"
         ]
         
-        self.negative_words = [
+        self.negative_words_zh = [
             "差", "坏", "糟", "弱", "不满", "失望", "遗憾", "讨厌", "恶心", "劣质", 
             "糟糕", "可怕", "不行", "问题", "缺陷", "缺点", "困难", "抱怨", "批评", "退款"
         ]
         
-        self.neutral_words = [
+        self.neutral_words_zh = [
             "一般", "还行", "中等", "正常", "普通", "平均", "中立", "基本", "凑合", "将就"
         ]
+        
+        # English sentiment dictionaries
+        self.positive_words_en = [
+            "good", "great", "excellent", "awesome", "nice", "wonderful", "fantastic",
+            "amazing", "superb", "perfect", "love", "like", "happy", "satisfied",
+            "outstanding", "brilliant", "best", "superior", "incredible", "remarkable"
+        ]
+        
+        self.negative_words_en = [
+            "bad", "poor", "terrible", "awful", "horrible", "disappointing", "worst",
+            "hate", "dislike", "unfortunately", "fail", "failure", "broken", "useless",
+            "problem", "defective", "issue", "complaint", "annoying", "inferior"
+        ]
+        
+        self.neutral_words_en = [
+            "average", "ok", "okay", "fine", "fair", "moderate", "neutral", "standard",
+            "acceptable", "normal", "common", "regular", "ordinary", "reasonable", "decent"
+        ]
+        
+        # Combined dictionaries
+        self.positive_words = self.positive_words_zh + self.positive_words_en
+        self.negative_words = self.negative_words_zh + self.negative_words_en
+        self.neutral_words = self.neutral_words_zh + self.neutral_words_en
         
         # Model metadata
         self.metadata = {
             "name": model_type,
             "type": "Rule-based Sentiment Model",
             "accuracy": 0.75 if model_type == "CNN" else 0.78,
-            "language": "Chinese"
+            "language": "Chinese and English"
         }
     
     def predict(self, text):

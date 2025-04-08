@@ -9,7 +9,8 @@ jieba.setLogLevel(20)  # Suppress jieba's debug info
 
 def clean_text(text):
     """
-    Clean the input text by removing special characters and normalizing
+    Clean the input text by removing special characters and normalizing.
+    Works with both Chinese and English text.
     
     Args:
         text: Input text string
@@ -17,7 +18,7 @@ def clean_text(text):
     Returns:
         Cleaned text string
     """
-    # Convert to lowercase if needed (for mixed Chinese-English text)
+    # Convert to lowercase
     text = text.lower()
     
     # Remove URLs
@@ -26,8 +27,15 @@ def clean_text(text):
     # Remove HTML tags
     text = re.sub(r'<.*?>', '', text)
     
-    # Remove special characters and numbers
-    text = re.sub(r'[^\u4e00-\u9fff\s]', '', text)  # Keep only Chinese characters and spaces
+    # Check if text contains Chinese characters
+    has_chinese = bool(re.search(r'[\u4e00-\u9fff]', text))
+    
+    if has_chinese:
+        # For Chinese text, keep Chinese characters, English letters, and spaces
+        text = re.sub(r'[^\u4e00-\u9fffa-zA-Z\s]', '', text)
+    else:
+        # For English text, keep only letters and spaces
+        text = re.sub(r'[^a-zA-Z\s]', '', text)
     
     # Remove extra spaces
     text = re.sub(r'\s+', ' ', text).strip()
@@ -36,7 +44,7 @@ def clean_text(text):
 
 def segment_text(text):
     """
-    Segment Chinese text into words using jieba
+    Segment text into words. Uses jieba for Chinese and simple splitting for English.
     
     Args:
         text: Input text string
@@ -44,8 +52,16 @@ def segment_text(text):
     Returns:
         List of segmented words
     """
-    segmented = jieba.cut(text)
-    return list(segmented)
+    # Check if text contains Chinese characters
+    has_chinese = bool(re.search(r'[\u4e00-\u9fff]', text))
+    
+    if has_chinese:
+        # For Chinese text, use jieba
+        segmented = jieba.cut(text)
+        return list(segmented)
+    else:
+        # For English text, just split by spaces
+        return text.split()
 
 def preprocess_text(text, max_length=100):
     """
@@ -73,7 +89,7 @@ def preprocess_text(text, max_length=100):
 
 class SimpleTokenizer:
     """
-    A simple tokenizer for Chinese text
+    A simple tokenizer for Chinese and English text
     
     This is a basic implementation to replace TensorFlow's Tokenizer
     """
