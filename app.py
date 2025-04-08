@@ -6,6 +6,7 @@ import pandas as pd
 from preprocessing import preprocess_text
 from visualization import plot_sentiment_distribution, plot_confidence
 from data_security import encrypt_data, decrypt_data
+from utils import save_analysis_history, load_analysis_history
 import base64
 import hashlib
 import hmac
@@ -27,7 +28,8 @@ if 'username' not in st.session_state:
 if 'role' not in st.session_state:
     st.session_state['role'] = ''
 if 'analysis_history' not in st.session_state:
-    st.session_state['analysis_history'] = []
+    # Load analysis history from file if it exists
+    st.session_state['analysis_history'] = load_analysis_history()
 if 'models' not in st.session_state:
     st.session_state['models'] = {}
 if 'selected_model' not in st.session_state:
@@ -155,8 +157,11 @@ def sentiment_analysis_page():
                 }
                 st.session_state['analysis_history'].append(analysis_result)
                 
+                # Save history to file
+                save_analysis_history(st.session_state['analysis_history'])
+                
                 # Display result
-                st.success(f"情感分析完成!")
+                st.success(f"情感分析完成! (Analysis completed!)")
                 
                 # Add English sentiment labels
                 english_sentiment_labels = ['Negative', 'Neutral', 'Positive']
@@ -205,9 +210,11 @@ def system_management_page():
     encryption_enabled = st.checkbox("启用数据加密", value=True)
     st.write("当前使用的加密算法: AES-256")
     
-    if st.button("清除分析历史"):
+    if st.button("清除分析历史 (Clear History)"):
         st.session_state['analysis_history'] = []
-        st.success("历史记录已清除")
+        # Save empty history to file
+        save_analysis_history([])
+        st.success("历史记录已清除 (History cleared)")
         st.rerun()
 
 def data_visualization_page():
