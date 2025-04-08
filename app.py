@@ -33,15 +33,15 @@ if 'models' not in st.session_state:
 if 'selected_model' not in st.session_state:
     st.session_state['selected_model'] = 'CNN'
 
-# Mock user database with encrypted passwords
-# In a real application, this would be stored in a secure database
+# Mock user database with simple passwords for demo
+# In a real application, this would be stored in a secure database with hashed passwords
 USERS = {
     'admin': {
-        'password': 'sha256$5d41402abc4b2a76b9719d911017c592$a7b49430346ffd049b41e7638a56710a',  # "hello"
+        'password': 'hello',  # Simple plain text for demo
         'role': 'admin'
     },
     'user': {
-        'password': 'sha256$5d41402abc4b2a76b9719d911017c592$a7b49430346ffd049b41e7638a56710a',  # "hello"
+        'password': 'hello',  # Simple plain text for demo
         'role': 'user'
     }
 }
@@ -49,20 +49,13 @@ USERS = {
 SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key_for_password_hashing")
 
 def verify_password(stored_password, provided_password):
-    """Verify a stored password against a provided password"""
-    algorithm, salt, hash_val = stored_password.split('$')
-    hash_obj = hashlib.new(algorithm)
-    hash_obj.update((salt + provided_password).encode('utf-8'))
-    return hmac.compare_digest(hash_obj.hexdigest(), hash_val)
+    """Verify a password - using simple comparison for the demo"""
+    return stored_password == provided_password
 
 def hash_password(password):
-    """Hash a password for storing"""
-    algorithm = 'sha256'
-    salt = hashlib.md5(os.urandom(60)).hexdigest()
-    hash_obj = hashlib.new(algorithm)
-    hash_obj.update((salt + password).encode('utf-8'))
-    hash_val = hash_obj.hexdigest()
-    return f"{algorithm}${salt}${hash_val}"
+    """Hash a password for storing - returns plaintext for the demo"""
+    # In a real app, this would use a secure hashing algorithm
+    return password
 
 def load_models():
     """Load or create sentiment analysis models"""
@@ -84,9 +77,9 @@ def login_user():
     st.subheader("Chinese/English Sentiment Analysis & Privacy Protection")
     
     with st.form("login_form"):
-        username = st.text_input("用户名")
-        password = st.text_input("密码", type="password")
-        submit_button = st.form_submit_button("登录")
+        username = st.text_input("用户名 (Username)")
+        password = st.text_input("密码 (Password)", type="password")
+        submit_button = st.form_submit_button("登录 (Login)")
         
         if submit_button:
             if username in USERS and verify_password(USERS[username]['password'], password):
@@ -97,7 +90,7 @@ def login_user():
                 time.sleep(1)
                 st.rerun()
             else:
-                st.error("用户名或密码错误")
+                st.error("用户名或密码错误 (Wrong username or password)")
 
 def display_sidebar():
     """Display sidebar with navigation options"""
