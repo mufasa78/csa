@@ -1,0 +1,9 @@
+cryptography>=44.0.2
+jieba>=0.42.1
+matplotlib>=3.10.1
+numpy>=2.2.4
+pandas>=2.2.3
+plotly>=6.0.1
+psutil>=7.0.0
+streamlit>=1.44.1
+tensorflow>=2.14.0

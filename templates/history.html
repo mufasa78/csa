@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}分析历史 | 中文/英文情感识别系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">分析历史</h4>
+                <p class="mb-0">Analysis History</p>
+            </div>
+            <div class="card-body">
+                {% if history %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>时间 (Time)</th>
+                                <th>文本 (Text)</th>
+                                <th>情感 (Sentiment)</th>
+                                <th>置信度 (Confidence)</th>
+                                <th>模型 (Model)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in history|reverse %}
+                            <tr>
+                                <td>{{ item.timestamp }}</td>
+                                <td>
+                                    {% if item.text|length > 50 %}
+                                    {{ item.text[:50] }}...
+                                    {% else %}
+                                    {{ item.text }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.sentiment == '积极' %}
+                                    <span class="sentiment-positive">积极 (Positive)</span>
+                                    {% elif item.sentiment == '中性' %}
+                                    <span class="sentiment-neutral">中性 (Neutral)</span>
+                                    {% else %}
+                                    <span class="sentiment-negative">消极 (Negative)</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ "%.2f"|format(item.confidence) }}</td>
+                                <td>{{ item.model }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                情感分布 (Sentiment Distribution)
+                            </div>
+                            <div class="card-body">
+                                <canvas id="sentimentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                模型使用情况 (Model Usage)
+                            </div>
+                            <div class="card-body">
+                                <canvas id="modelChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    暂无分析历史记录 (No analysis history yet)
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if history %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sentiment distribution chart
+        const sentimentCounts = {
+            '积极': 0,
+            '中性': 0,
+            '消极': 0
+        };
+        
+        // Model usage chart
+        const modelCounts = {
+            'CNN': 0,
+            'LSTM': 0
+        };
+        
+        // Count occurrences
+        {% for item in history %}
+        sentimentCounts['{{ item.sentiment }}']++;
+        modelCounts['{{ item.model }}']++;
+        {% endfor %}
+        
+        // Sentiment chart
+        const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+        new Chart(sentimentCtx, {
+            type: 'pie',
+            data: {
+                labels: ['积极 (Positive)', '中性 (Neutral)', '消极 (Negative)'],
+                datasets: [{
+                    data: [sentimentCounts['积极'], sentimentCounts['中性'], sentimentCounts['消极']],
+                    backgroundColor: ['#28a745', '#17a2b8', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // Model chart
+        const modelCtx = document.getElementById('modelChart').getContext('2d');
+        new Chart(modelCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CNN', 'LSTM'],
+                datasets: [{
+                    label: '使用次数 (Usage Count)',
+                    data: [modelCounts['CNN'], modelCounts['LSTM']],
+                    backgroundColor: ['#007bff', '#6f42c1']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

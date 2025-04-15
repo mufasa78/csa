@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}首页 | 中文/英文情感识别系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">欢迎使用中文/英文情感识别系统</h4>
+            </div>
+            <div class="card-body">
+                <h5>您好, {{ username }}!</h5>
+                <p>本系统可以帮助您分析中文和英文文本的情感倾向，支持积极、消极和中性三种情感分类。</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">情感分析</h5>
+                                <p class="card-text">分析单条中文或英文文本的情感倾向</p>
+                                <a href="{{ url_for('analyze') }}" class="btn btn-primary">开始分析</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">分析历史</h5>
+                                <p class="card-text">查看您之前的分析记录和结果</p>
+                                <a href="{{ url_for('history') }}" class="btn btn-primary">查看历史</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if role == 'admin' %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">系统管理</h5>
+                                <p class="card-text">管理用户、查看系统状态和统计数据</p>
+                                <a href="{{ url_for('admin') }}" class="btn btn-primary">管理系统</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-4">
+                    <h5>系统特点：</h5>
+                    <ul>
+                        <li>支持中文和英文文本的情感分析</li>
+                        <li>提供CNN和LSTM两种深度学习模型</li>
+                        <li>数据加密和隐私保护功能</li>
+                        <li>详细的分析结果和可视化展示</li>
+                        <li>历史记录查询和统计分析</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

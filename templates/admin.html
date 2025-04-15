@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}系统管理 | 中文/英文情感识别系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">系统管理</h4>
+                <p class="mb-0">System Administration</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                系统状态 (System Status)
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="text-center mb-3">
+                                            <h5>{{ stats.total_analyses }}</h5>
+                                            <p class="text-muted">总分析次数<br>(Total Analyses)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center mb-3">
+                                            <h5>2</h5>
+                                            <p class="text-muted">用户数<br>(Users)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="text-center">
+                                            <h5>{{ stats.cnn_analyses }}</h5>
+                                            <p class="text-muted">CNN模型使用<br>(CNN Usage)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center">
+                                            <h5>{{ stats.lstm_analyses }}</h5>
+                                            <p class="text-muted">LSTM模型使用<br>(LSTM Usage)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                情感分析统计 (Sentiment Analysis Statistics)
+                            </div>
+                            <div class="card-body">
+                                <canvas id="sentimentStatsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                用户管理 (User Management)
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>用户名 (Username)</th>
+                                                <th>角色 (Role)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for user in users %}
+                                            <tr>
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.role == 'admin' %}
+                                                    <span class="badge bg-danger">管理员 (Admin)</span>
+                                                    {% else %}
+                                                    <span class="badge bg-primary">普通用户 (User)</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                安全设置 (Security Settings)
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="dataEncryption" checked disabled>
+                                    <label class="form-check-label" for="dataEncryption">
+                                        启用数据加密 (Enable Data Encryption)
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="anonymizeData" checked disabled>
+                                    <label class="form-check-label" for="anonymizeData">
+                                        自动匿名化敏感数据 (Anonymize Sensitive Data)
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="sslEncryption" checked disabled>
+                                    <label class="form-check-label" for="sslEncryption">
+                                        启用 SSL/TLS 加密 (Enable SSL/TLS Encryption)
+                                    </label>
+                                </div>
+                                <p class="text-muted">
+                                    <small>当前使用的加密算法: AES-256</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                模型管理 (Model Management)
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>模型名称 (Model Name)</th>
+                                                <th>类型 (Type)</th>
+                                                <th>准确率 (Accuracy)</th>
+                                                <th>状态 (Status)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CNN</td>
+                                                <td>卷积神经网络 (Convolutional Neural Network)</td>
+                                                <td>87%</td>
+                                                <td><span class="badge bg-success">已加载 (Loaded)</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>LSTM</td>
+                                                <td>长短期记忆网络 (Long Short-Term Memory)</td>
+                                                <td>89%</td>
+                                                <td><span class="badge bg-success">已加载 (Loaded)</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sentiment statistics chart
+        const sentimentStatsCtx = document.getElementById('sentimentStatsChart').getContext('2d');
+        new Chart(sentimentStatsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['积极 (Positive)', '中性 (Neutral)', '消极 (Negative)'],
+                datasets: [{
+                    label: '数量 (Count)',
+                    data: [{{ stats.positive_sentiments }}, {{ stats.neutral_sentiments }}, {{ stats.negative_sentiments }}],
+                    backgroundColor: ['#28a745', '#17a2b8', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

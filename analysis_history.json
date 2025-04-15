@@ -1,0 +1,44 @@
+[
+  {
+    "text": "Z0FBQUFBQm5faFdOc0ZhNkdpSnpuZHZ2SmNEbnFjcGtaUzV3aWEtVE5rX1ByVWZOd3NoZG5QZUQyblFNWGk3RUlhcDV6R2hXODRacjlWdVh0VnhnYm9kMjFOR2xMZXZyTXc9PQ==",
+    "sentiment": "积极",
+    "confidence": 0.36184496151045137,
+    "model": "CNN",
+    "timestamp": "2025-04-12 10:49:59"
+  },
+  {
+    "text": "Z0FBQUFBQm5faFdOZmp6YnZUVlNmcGtPUjRzUURBTGV6NVloM05VQ2drN2dHMDFJYXVrRUcxLWNNeFU5SkZCUDdWRU9uSllDY1ZjVEhneGZueFc5aXhON0NDMDZrX01oVFE9PQ==",
+    "sentiment": "消极",
+    "confidence": 0.4979004092759394,
+    "model": "LSTM",
+    "timestamp": "2025-04-12 10:50:20"
+  },
+  {
+    "text": "Z0FBQUFBQm5faFdOVnNsSDRmNU1PbjlreTBwcDZkWDVCRE1BWVN6RTNXNWlyNU1WeFNDMkpFX3FoRy05aTJkTURvWVZUZUwyQUZLWTRsU0Q3Y05sOHNvQ2t4Qzg3OHRDeHc9PQ==",
+    "sentiment": "中性",
+    "confidence": 0.35,
+    "model": "LSTM",
+    "timestamp": "2025-04-12 10:50:33"
+  },
+  {
+    "text": "Z0FBQUFBQm5faFdPc3VhbTRhRVlNcW5lbE9Yclh1d0RYbE94bGpLSHpoSGREbkl3Sm5GT0lIdEVETk1QZjBYNjhrcldHYXh4ak1nSzltRFZoU2pPVG9ORmJnNzdMNDVmU3p0WWxmcnNlWVBSeDE0LXdHbzNnTlE9",
+    "sentiment": "消极",
+    "confidence": 0.5170200520965067,
+    "model": "CNN",
+    "timestamp": "2025-04-15 11:08:34"
+  },
+  {
+    "text": "Z0FBQUFBQm5faFdPa2lRejRiZERjQldQV0FzZGpfblVLSjNWenotTVJacXQtWlhrZmhmOVJ5TjFfdEwyOXhVclBMX2JYOW54NzFyc09fRXN6REswUy1UTmF6dXFOUUJmZ1NPaHZoTlJ0YUVHaHFzWW0wZzNTX0JxVDhuQXlLY09LVzZYSWQ2d3c0aF8=",
+    "sentiment": "消极",
+    "confidence": 0.5252423231729964,
+    "model": "LSTM",
+    "timestamp": "2025-04-15 11:14:45"
+  },
+  {
+    "text": "Z0FBQUFBQm5faFdPQnNrOWhOd0VKZTJONHpvVmZrOW1FTDlGOFFhOTBTdmlDbUhjMUpxUmxFd1FLNDJLRkUzQ2lzMEVQdjRJOUhSR2J4UUZFcjcyTENtSVBManJlTzZzeFZMY1pLUS1IdDZjNU5YcU40U2RUdW89",
+    "sentiment": "消极",
+    "confidence": 0.3637313226541067,
+    "model": "CNN",
+    "timestamp": "2025-04-15 11:15:08"
+  }
+]
